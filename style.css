@@ -29,12 +29,14 @@ h1 { margin: 0; font-size: 20px; letter-spacing: 2px; }
 .head-line { margin: 2px 0 0; font-size: 11px; opacity: .85; }
 .head-right { text-align: right; }
 .head-date { font-size: 11px; opacity: .85; margin-top: 3px; }
-.chip {
+.chip { 
   display: inline-block; background: rgba(255,255,255,.18);
   border: 1px solid rgba(255,255,255,.35); border-radius: 999px;
   padding: 4px 10px; font-size: 12px; white-space: nowrap;
 }
 .chip.small { font-size: 11px; background: #EDF2F7; color: var(--blue); border: none; }
+.copy-today-btn { float: right; padding: 4px 12px; font-size: 12px; margin-top: -3px; }
+.copy-hint { font-size: 12px; color: var(--muted); margin: -4px 0 10px; }
 main { max-width: 640px; margin: 0 auto; padding: 14px 14px 24px; }
 .tab { display: none; }
 .tab.active { display: block; animation: fade .25s ease; }
