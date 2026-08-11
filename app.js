@@ -604,6 +604,38 @@ function importData(file) {
   reader.readAsText(file);
 }
 
+/* ---------- 一键复制今日清单（配合番茄ToDo） ---------- */
+function buildTodayCopyText() {
+  const info = dailyListFor(new Date());
+  return info.list
+    .map((m) => (m.min ? m.name + "（" + m.min + "分钟）" : m.name))
+    .join("\n");
+}
+function copyToday() {
+  const text = buildTodayCopyText();
+  const done = (ok) => toast(ok ? "已复制今日清单，去番茄ToDo粘贴" : "复制失败，请长按手动复制");
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => done(true)).catch(() => fallbackCopy(text, done));
+  } else {
+    fallbackCopy(text, done);
+  }
+}
+function fallbackCopy(text, done) {
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    done(ok);
+  } catch (e) {
+    done(false);
+  }
+}
+
 /* ---------- 事件 ---------- */
 document.querySelectorAll("#bottomNav button").forEach((b) =>
   b.addEventListener("click", () => {
@@ -636,6 +668,7 @@ document.addEventListener("click", (e) => {
     const v = $("examDateInput").value;
     if (v) { settings.exam = v; saveSettings(); renderHead(); toast("考试日期已更新"); }
   }
+  if (e.target.matches("#copyTodayBtn")) copyToday();
   if (e.target.matches("#exportBtn")) exportData();
   if (e.target.matches("#clearDataBtn")) {
     if (!confirm("确定清空全部打卡记录吗？")) return;
