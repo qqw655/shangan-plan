@@ -1,5 +1,5 @@
 "use strict";
-const CACHE = "sa-plan-v1";
+const CACHE = "sa-plan-v2";
 const ASSETS = [
   "./",
   "./index.html",
