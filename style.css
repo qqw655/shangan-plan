@@ -154,3 +154,10 @@ input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--blue); f
 .strat-shen { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin: 8px 0; background: #F4F8FC; }
 .strat-shen b { font-size: 13px; color: var(--blue); }
 .strat-shen div { font-size: 12px; color: #444; line-height: 1.7; margin-top: 4px; }
+.ti-row { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; padding: 9px 2px; border-bottom: 1px dashed var(--line); font-size: 13px; }
+.ti-row:last-child { border-bottom: none; }
+.ti-row b { flex: none; width: 76px; color: var(--blue); }
+.ti-num { flex: none; font-weight: 700; color: #333; }
+.ti-time { flex: none; color: var(--muted); }
+.ti-target { flex: none; font-weight: 700; color: var(--green, #70AD47); }
+.ti-row em { flex: 1 1 100%; font-style: normal; font-size: 12px; color: var(--muted); line-height: 1.5; }
