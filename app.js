@@ -69,6 +69,130 @@ const PHASES = [
   }
 ];
 
+/* 行测 80 分每日清单：训练日（周一/二/四/五 7.5h）与休息日（周三/六/日 8.5h）自动切换
+   每天固定留 3 小时自由时间；睡眠时间自定，醒来后按清单顺序走即可 */
+const DAILY80 = {
+  train: {
+    1: {
+      tag: "训练日 · 7.5h",
+      dayLine: "周一 · 下肢力量日",
+      modules: [
+        { name: "资料分析", min: 90, what: "20 题限时 25 分钟 + 错题公式复盘（隔年/混合增长率）" },
+        { name: "数字推理", min: 45, what: "多级差专项 20 题（广东近 3 年 3/5 题来源）" },
+        { name: "数学运算", min: 60, what: "工程问题（赋值法）10 题" },
+        { name: "判断·翻译推理", min: 60, what: "如果/只有才/除非否则/且或非/德摩根，15 题（去年 0/2 项）" },
+        { name: "科学·力学", min: 45, what: "受力分析/牛顿定律/压强浮力（去年物理全错）" },
+        { name: "言语·主旨", min: 45, what: "转折/因果/对策 15 题限时" },
+        { name: "常识时政", min: 30, what: "近 1 月时政 30 条" },
+        { name: "公专申论保温", min: 30, what: "公安章节 1 章 或 申论概括 1 题" },
+        { name: "错题复盘", min: 45, what: "当日错题归因 + 上周错题重做" }
+      ]
+    },
+    2: {
+      tag: "训练日 · 7.5h",
+      dayLine: "周二 · 上肢推日",
+      modules: [
+        { name: "资料分析", min: 90, what: "20 题限时 + 比重变化/平均数专项复盘" },
+        { name: "数字推理", min: 45, what: "幂次 + 递推数列专项 20 题" },
+        { name: "数学运算", min: 60, what: "行程问题（相遇/追及）10 题" },
+        { name: "图推·位置样式", min: 60, what: "平移旋转/叠加去同存异 15 题（去年 40%）" },
+        { name: "科学·电学", min: 45, what: "欧姆定律/串并联电路基础" },
+        { name: "言语·逻辑填空", min: 45, what: "高频成语 20 组辨析 + 真题 10 题" },
+        { name: "常识时政", min: 30, what: "法律（公安相关：治安管理/刑法基础）" },
+        { name: "公专申论保温", min: 30, what: "公安章节 1 章 或 申论概括 1 题" },
+        { name: "错题复盘", min: 45, what: "当日错题归因 + 间隔重做" }
+      ]
+    },
+    4: {
+      tag: "训练日 · 7.5h",
+      dayLine: "周四 · 爆发·高翻日",
+      modules: [
+        { name: "资料分析", min: 90, what: "20 题限时 + 增长量比较/速算（截位直除/百化分）" },
+        { name: "数字推理", min: 45, what: "分数数列 + 组合数列专项 20 题" },
+        { name: "数学运算", min: 60, what: "利润 + 容斥问题（两/三集合公式）10 题" },
+        { name: "科学·力学进阶", min: 60, what: "功与能/浮力综合（运动图像优先）" },
+        { name: "图推·属性数量", min: 45, what: "对称/曲直/点线面角素规律 15 题" },
+        { name: "言语·主旨", min: 45, what: "意图判断 15 题限时" },
+        { name: "常识时政", min: 30, what: "近 1 月时政 30 条" },
+        { name: "公专申论保温", min: 30, what: "公安章节 1 章 或 申论概括 1 题" },
+        { name: "错题复盘", min: 45, what: "当日错题归因 + 上周错题重做" }
+      ]
+    },
+    5: {
+      tag: "训练日 · 7.5h",
+      dayLine: "周五 · 上肢拉日",
+      modules: [
+        { name: "资料分析", min: 90, what: "综合判断用排除法 + 20 题限时提速" },
+        { name: "数字推理", min: 45, what: "本周四类题型综合小测 20 题" },
+        { name: "数学运算", min: 60, what: "排列组合 + 古典概率 10 题" },
+        { name: "判断·加强削弱", min: 60, what: "因果/类比/枚举加强削弱 15 题" },
+        { name: "科学·化学生物", min: 45, what: "物质变化/细胞遗传等结论背诵" },
+        { name: "言语·逻辑填空", min: 45, what: "高频成语 20 组 + 实词辨析 10 题" },
+        { name: "常识时政", min: 30, what: "法律（宪法/刑法/行政法）" },
+        { name: "公专申论保温", min: 30, what: "公安章节 1 章 或 申论概括 1 题" },
+        { name: "错题复盘", min: 45, what: "当日错题归因 + 间隔重做" }
+      ]
+    }
+  },
+  rest: {
+    3: {
+      tag: "休息日 · 8.5h",
+      dayLine: "周三 · 完整套卷日",
+      modules: [
+        { name: "行测套卷", min: 90, what: "完整 90 题限时 90 分钟（广东真题）" },
+        { name: "套卷深度复盘", min: 165, what: "逐题归类：考点/错因/时间，写进错题本" },
+        { name: "资料提速", min: 45, what: "20 题限时 25 分钟，目标错 ≤1" },
+        { name: "数量补差", min: 45, what: "数推 5 题 + 运算挑 5 题" },
+        { name: "判断保持", min: 45, what: "逻辑/图推/科学各一组共 15 题" },
+        { name: "言语保持", min: 45, what: "15 题限时 13 分钟" },
+        { name: "常识时政", min: 30, what: "时政 + 广东本地（大湾区/高质量发展）" },
+        { name: "公专申论", min: 45, what: "公专真题 20 题 或 申论小题 1 题" }
+      ]
+    },
+    6: {
+      tag: "休息日 · 8.5h",
+      dayLine: "周六 · 弱点攻坚日",
+      modules: [
+        { name: "数推攻坚", min: 60, what: "四类题型各 5 题，超时题标记后复盘" },
+        { name: "图推攻坚", min: 60, what: "立体类优先 + 规律类扫题共 20 题" },
+        { name: "科学攻坚", min: 60, what: "物理力学/电学/光学 + 化学生物综合 20 题" },
+        { name: "资料限时", min: 60, what: "20 题限时 25 分钟 + 错题公式复盘" },
+        { name: "言语综合", min: 60, what: "成语 20 组 + 主旨意图 15 题" },
+        { name: "逻辑保持", min: 45, what: "翻译/加强削弱 15 题" },
+        { name: "常识时政", min: 30, what: "近 1 月时政 30 条" },
+        { name: "公专申论", min: 45, what: "公专章节 2 章 或 申论小题 1 题" },
+        { name: "本周错题总复盘", min: 90, what: "本周全部错题重做一遍，错因归类" }
+      ]
+    },
+    0: {
+      tag: "休息日 · 8.5h",
+      dayLine: "周日 · 套卷 + 申论加量",
+      modules: [
+        { name: "行测套卷", min: 90, what: "完整 90 题限时 90 分钟（换一套新题）" },
+        { name: "套卷深度复盘", min: 120, what: "逐题归类考点/错因，错题本更新" },
+        { name: "资料提速", min: 45, what: "20 题限时 25 分钟" },
+        { name: "数量补差", min: 45, what: "数推 5 题 + 运算挑 5 题" },
+        { name: "言语保持", min: 45, what: "15 题限时 13 分钟" },
+        { name: "常识时政", min: 30, what: "时政 + 法律" },
+        { name: "公专申论加量", min: 90, what: "申论小题 2 道 或 公安章节 2 章" },
+        { name: "错题复盘", min: 45, what: "本周错题间隔重做" }
+      ]
+    }
+  }
+};
+
+function isTrainDay(d) {
+  const w = d.getDay();
+  return w === 1 || w === 2 || w === 4 || w === 5;
+}
+function dailyListFor(now) {
+  const pi = phaseOf(now);
+  if (pi !== 0) return { list: PHASES[pi].modules, tag: null, dayLine: null };
+  const w = now.getDay();
+  const day = isTrainDay(now) ? DAILY80.train[w] : DAILY80.rest[w];
+  return { list: day.modules, tag: day.tag, dayLine: day.dayLine };
+}
+
 /* 广东行测策略：着重 vs 放弃（依据广东卷特点 + 你的周测情况） */
 const STRATEGY = {
   gd: [
@@ -105,7 +229,7 @@ const STRATEGY = {
     { t: "数量蒙题恐惧", d: "数量放最后，数推 5 题认真做，运算挑 3-5 道会的，其余统一蒙——别因数量影响心态和时间。" }
   ],
   daily: [
-    { phase: "打底期", split: "行测 4.5h（资料/判断/言语/数量/图推科学）· 公专 1.5h · 申论 0.75h · 错题+时政 1.25h" },
+    { phase: "打底期", split: "行测80分清单：训练日 7.5h / 休息日 8.5h，今日页按训练节奏自动切换 · 每天留 3h 自由" },
     { phase: "巩固期", split: "行测 4.2h · 公专 1.7h · 申论 1h · 错题+时政 1.1h" },
     { phase: "套题期", split: "行测套卷/保持 3.5h · 公专 1.5h · 申论 1.5h · 错题复盘 1.5h" },
     { phase: "冲刺期", split: "模拟+错题 3.5h · 公专 1h · 申论 0.75h · 时政 0.75h · 睡眠优先" }
@@ -203,19 +327,21 @@ function renderToday() {
   const now = new Date();
   const pi = phaseOf(now);
   const ph = PHASES[pi];
+  const info = dailyListFor(now);
+  const list = info.list;
   const key = todayStr(now);
   const d = done[key] || {};
-  $("phaseName").textContent = ph.name;
-  $("phaseDays").textContent = ph.days + " · " + ph.tip;
+  $("phaseName").textContent = pi === 0 ? "行测80分 · " + info.tag : ph.name;
+  $("phaseDays").textContent = pi === 0 ? info.dayLine + " · 每天留 3h 自由 · 睡眠自定" : ph.days + " · " + ph.tip;
 
-  const totalMin = ph.modules.reduce((s, m) => s + (m.min || 0), 0);
-  const doneMin = ph.modules.reduce((s, m) => s + (d[m.name] ? (m.min || 0) : 0), 0);
+  const totalMin = list.reduce((s, m) => s + (m.min || 0), 0);
+  const doneMin = list.reduce((s, m) => s + (d[m.name] ? (m.min || 0) : 0), 0);
   const pct = totalMin > 0 ? Math.min(100, Math.round(doneMin / totalMin * 100)) : 0;
   $("phaseBar").style.width = pct + "%";
   $("phaseTotal").textContent = "今日目标 " + totalMin + " 分钟 · 已完成 " + doneMin + " 分钟";
   $("doneChip").textContent = "完成 " + pct + "%";
 
-  $("moduleList").innerHTML = ph.modules.map((m) => {
+  $("moduleList").innerHTML = list.map((m) => {
     const checked = !!d[m.name];
     return (
       '<div class="mod-item' + (checked ? " done" : "") + '">' +
@@ -247,7 +373,7 @@ function renderStats() {
   $("statTotal").textContent = checkins.size;
   const now = new Date();
   const d = done[todayStr(now)] || {};
-  const min = PHASES[phaseOf(now)].modules.reduce((s, m) => s + (d[m.name] ? (m.min || 0) : 0), 0);
+  const min = dailyListFor(now).list.reduce((s, m) => s + (d[m.name] ? (m.min || 0) : 0), 0);
   $("statToday").textContent = min;
   $("examDateInput").value = settings.exam || EXAM_DEFAULT;
 }
