@@ -1,0 +1,15 @@
+{
+  "name": "上岸计划",
+  "short_name": "上岸计划",
+  "description": "117天广东省考模块化备考计划，按文献设计，每日打卡。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F5F7FA",
+  "theme_color": "#1F4E79",
+  "lang": "zh-CN",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
