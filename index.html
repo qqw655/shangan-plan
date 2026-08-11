@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1F4E79">
+<title>上岸计划</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="head-left">
+    <img class="logo" src="icons/icon-192.png" alt="上岸计划">
+    <div>
+      <h1>上岸计划</h1>
+      <p id="headLine" class="head-line">模块化备考 · 科学提分</p>
+    </div>
+  </div>
+  <div class="head-right">
+    <div id="countdownChip" class="chip">距考试 — 天</div>
+    <div id="headDate" class="head-date"></div>
+  </div>
+</header>
+
+<main>
+  <!-- 今日 -->
+  <section id="tab-today" class="tab active">
+    <div class="card phase-card">
+      <div class="phase-name" id="phaseName">打底期</div>
+      <div class="phase-days" id="phaseDays">第 1-30 天</div>
+      <div class="bar"><div id="phaseBar" style="width:0%"></div></div>
+      <div class="phase-total" id="phaseTotal"></div>
+    </div>
+
+    <div id="weeklyFocus" class="weekly-focus hidden"></div>
+
+    <div class="card">
+      <div class="card-title">今日模块 <span id="doneChip" class="chip small"></span></div>
+      <div id="moduleList"></div>
+    </div>
+
+    <div class="card streak-card">
+      <div class="streak-num" id="streakNum">0</div>
+      <div class="streak-label">连续打卡天数</div>
+      <div class="streak-sub" id="streakSub">今天还没开始，加油</div>
+    </div>
+  </section>
+
+  <!-- 计划 -->
+  <section id="tab-plan" class="tab">
+    <div class="card">
+      <div class="card-title">行测做题顺序（90 题 · 90 分钟）</div>
+      <div id="orderList"></div>
+      <div class="order-rules">
+        <div class="rule">① 每题有硬时限，超时标记跳过，最后回头补</div>
+        <div class="rule">② 涂卡分模块涂，别攒到最后</div>
+        <div class="rule">③ 不空题，不会的统一蒙</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">四阶段总览（117 天）</div>
+      <div class="phase-picker" id="phasePicker"></div>
+    </div>
+    <div id="phaseDetail"></div>
+  </section>
+
+  <!-- 周测分析 -->
+  <section id="tab-quiz" class="tab">
+    <div class="card">
+      <div class="card-title">每周套卷 · 成绩录入</div>
+      <p class="hint">每周做一套全真计时套卷后，录入各模块"答对/共题"，我会按目标正确率和提分性价比，给出本周具体侧重（精确到题型）+ 每日 8 小时安排。依据：测试效应、间隔重复、交错练习、刻意练习。</p>
+      <div class="quiz-row"><span>本周套卷</span><b id="quizWeekLabel">第 1 周</b><span id="quizDateLabel" class="quiz-date"></span></div>
+      <div class="quiz-row"><span>难度</span>
+        <select id="quizDiff">
+          <option value="normal">正常</option>
+          <option value="easy">简单（高分要打折看）</option>
+          <option value="hard">偏难</option>
+        </select>
+      </div>
+      <div id="quizInputs"></div>
+      <div class="quiz-row"><span>未答（空着没做的题）</span><input type="number" id="quizUnanswered" min="0" max="30" value="0" placeholder="0"></div>
+      <div class="btn-row"><button id="quizSaveBtn" class="btn primary">保存并分析</button></div>
+      <p class="hint" style="margin-top:8px">数量薄弱、资料一般这些个人情况已内置在分析里；本套卷若偏简单，难度选"简单"，分析会自动打折看待高分。</p>
+    </div>
+    <div id="quizAnalysis"></div>
+    <div id="quizHistory"></div>
+  </section>
+
+  <!-- 我的 -->
+  <section id="tab-me" class="tab">
+    <div class="card">
+      <div class="card-title">打卡记录</div>
+      <div class="stat-row">
+        <div class="stat"><b id="statStreak">0</b><span>连续天数</span></div>
+        <div class="stat"><b id="statTotal">0</b><span>累计打卡</span></div>
+        <div class="stat"><b id="statToday">0</b><span>今日分钟</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">考试日期</div>
+      <div class="form-row">
+        <input type="date" id="examDateInput">
+        <button id="examDateSave" class="btn primary">保存</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">数据</div>
+      <div class="btn-row">
+        <button id="exportBtn" class="btn">导出备份(JSON)</button>
+        <label class="btn file-btn">导入备份<input type="file" id="importFile" accept=".json" hidden></label>
+      </div>
+      <div class="btn-row">
+        <button id="clearDataBtn" class="btn danger">清空打卡</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">为什么这样安排（文献依据）</div>
+      <ul class="notes">
+        <li><b>主动回忆 / 测试效应</b>：先做题、再看解析、重做错题，比反复听课记得牢（Roediger & Karpicke 2006；Dunlosky 2013）</li>
+        <li><b>间隔重复</b>：错题每周重做，知识按间隔巩固（Cepeda 等 2006）</li>
+        <li><b>交错练习</b>：资料、数量、公专混合安排，避免单模块连续疲劳（Rohrer & Taylor 2007）</li>
+        <li><b>刻意练习</b>：图推、数推专项补弱，聚焦短板（Ericsson）</li>
+        <li><b>睡眠与运动</b>：记忆固化靠睡眠，训练提升学习效率，不是耽误时间（Walker）</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">使用说明</div>
+      <ul class="notes">
+        <li>App 按距考试天数自动切换阶段（打底→巩固→套题→冲刺）</li>
+        <li>每个模块有每日时长，做完点勾打卡，进度条记录当日完成</li>
+        <li>带"每周N次"的模块按周安排，不用每天都做</li>
+        <li>想调整时长、模块或阶段？告诉我就好</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<nav id="bottomNav">
+  <button data-tab="today" class="active">今日</button>
+  <button data-tab="plan">计划</button>
+  <button data-tab="quiz">周测</button>
+  <button data-tab="me">我的</button>
+</nav>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
